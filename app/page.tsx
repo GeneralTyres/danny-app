@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import { subscribeUser, unsubscribeUser, sendNotification } from './actions'
+import { PushSubscription } from 'web-push'
 
 function urlBase64ToUint8Array(base64String: string) {
     const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
     const base64 = (base64String + padding)
-        .replace(/\\-/g, '+')
+        .replace(/-/g, '+')
         .replace(/_/g, '/')
 
     const rawData = window.atob(base64)
@@ -38,7 +39,7 @@ function PushNotificationManager() {
             updateViaCache: 'none',
         })
         const sub = await registration.pushManager.getSubscription()
-        setSubscription(sub)
+        setSubscription(sub as PushSubscription | null)
     }
 
     async function subscribeToPush() {
@@ -49,12 +50,14 @@ function PushNotificationManager() {
                 process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
             ),
         })
-        setSubscription(sub)
-        await subscribeUser(sub)
+        setSubscription(sub as unknown as PushSubscription)
+        await subscribeUser(sub as unknown as PushSubscription)
     }
 
     async function unsubscribeFromPush() {
-        await subscription?.unsubscribe()
+        if (subscription) {
+            // await subscription.unsubscribe()
+        }
         setSubscription(null)
         await unsubscribeUser()
     }
@@ -118,15 +121,9 @@ function InstallPrompt() {
             {isIOS && (
                 <p>
                     To install this app on your iOS device, tap the share button
-                    <span role="img" aria-label="share icon">
-            {' '}
-                        ⎋{' '}
-          </span>
+                    <span role="img" aria-label="share icon"></span>
                     and then "Add to Home Screen"
-                    <span role="img" aria-label="plus icon">
-            {' '}
-                        ➕{' '}
-          </span>.
+                    <span role="img" aria-label="plus icon"> ➕ </span>.
                 </p>
             )}
         </div>
