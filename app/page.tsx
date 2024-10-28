@@ -78,20 +78,21 @@ function PushNotificationManager() {
             <h3>Push Notifications</h3>
             {subscription ? (
                 <>
-                    <p>You are subscribed to push notifications.</p>
-                    <button onClick={unsubscribeFromPush}>Unsubscribe</button>
+                    <p>You are subscribed to push notifications. bla bla</p>
+                    {/*Nice tailwind styled button*/}
+                    <button onClick={unsubscribeFromPush} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Unsubscribe</button>
                     <input
                         type="text"
                         placeholder="Enter notification message"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                     />
-                    <button onClick={sendTestNotification}>Send Test</button>
+                    <button onClick={sendTestNotification} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Send Test</button>
                 </>
             ) : (
                 <>
                     <p>You are not subscribed to push notifications.</p>
-                    <button onClick={subscribeToPush}>Subscribe</button>
+                    <button onClick={subscribeToPush} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Subscribe</button>
                 </>
             )}
         </div>
@@ -117,7 +118,7 @@ function InstallPrompt() {
     return (
         <div>
             <h3>Install App</h3>
-            <button>Add to Home Screen</button>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add to Home Screen</button>
             {isIOS && (
                 <p>
                     To install this app on your iOS device, tap the share button
